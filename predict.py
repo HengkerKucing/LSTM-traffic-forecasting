@@ -73,8 +73,8 @@ def predict():
         volume_masuk_pred, volume_keluar_pred = predicted[0]
 
         return {
-            "volume_masuk_prediksi": round(float(volume_masuk_pred), 2),
-            "volume_keluar_prediksi": round(float(volume_keluar_pred), 2)
+            "volume_masuk_prediksi": round(float(volume_keluar_pred), 2),
+            "volume_keluar_prediksi": round(float(volume_masuk_pred), 2)
         }
 
     except Exception as e:
