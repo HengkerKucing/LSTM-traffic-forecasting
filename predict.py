@@ -70,11 +70,33 @@ def predict():
         predicted = scaler.inverse_transform(predicted_scaled)
         print("Final prediction:", predicted)
 
+        def get_traffic_category(volume):
+            if 0 <= volume <= 500:
+                return "Lancar"
+            elif 501 <= volume <= 1100:
+                return "Ramai Lancar"
+            elif 1101 <= volume <= 2000:
+                return "Ramai Pelan"
+            else:
+                return "Tidak Terdefinisi"
+
         volume_masuk_pred, volume_keluar_pred = predicted[0]
+        
+        volume_masuk = round(float(volume_keluar_pred), 2)
+        volume_keluar = round(float(volume_masuk_pred), 2)
+        
+        kategori_masuk = get_traffic_category(volume_masuk)
+        kategori_keluar = get_traffic_category(volume_keluar)
 
         return {
-            "volume_masuk_prediksi": round(float(volume_keluar_pred), 2),
-            "volume_keluar_prediksi": round(float(volume_masuk_pred), 2)
+            "volume_masuk": {
+                "nilai": volume_masuk,
+                "kategori": kategori_masuk
+            },
+            "volume_keluar": {
+                "nilai": volume_keluar,
+                "kategori": kategori_keluar
+            }
         }
 
     except Exception as e:
