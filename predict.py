@@ -27,7 +27,7 @@ scaler = joblib.load("scaler_volume.save")
 def predict():
     try:
         query = """
-        SELECT time_bin, direction, volume 
+        SELECT time_bin, direction, volume, location_name
         FROM traffic_data 
         WHERE direction IN (0, 1)
         ORDER BY time_bin DESC 
@@ -37,6 +37,9 @@ def predict():
 
         if df.empty:
             return {"error": "Data tidak tersedia di database"}
+
+        # Ambil location_name (ambil yang pertama karena seharusnya sama untuk semua data)
+        location_name = df['location_name'].iloc[0]
 
         df['volume'] = df['volume'].astype(int)
         df['time_bin'] = pd.to_datetime(df['time_bin'])
@@ -89,6 +92,7 @@ def predict():
         kategori_keluar = get_traffic_category(volume_keluar)
 
         return {
+            "lokasi": location_name,
             "volume_masuk": {
                 "nilai": volume_masuk,
                 "kategori": kategori_masuk
