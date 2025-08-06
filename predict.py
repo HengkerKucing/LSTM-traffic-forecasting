@@ -105,3 +105,12 @@ def predict():
 
     except Exception as e:
         return {"error": str(e)}
+
+@app.get("/dbtest")
+def dbtest():
+    try:
+        with engine.connect() as conn:
+            result = conn.execute("SELECT 1;")
+            return {"db_status": "ok", "result": [row[0] for row in result]}
+    except Exception as e:
+        return {"db_status": "error", "error": str(e)}
