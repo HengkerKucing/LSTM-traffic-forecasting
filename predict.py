@@ -11,6 +11,26 @@ app = FastAPI()
 
 load_dotenv()
 
+# Health check endpoints
+@app.get("/")
+def read_root():
+    return {"message": "LSTM Traffic Prediction Service", "status": "running"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
+@app.get("/dbtest")
+def test_database():
+    try:
+        # Test database connection
+        test_query = "SELECT 1"
+        with engine.connect() as conn:
+            result = conn.execute(test_query)
+            return {"database": "connected", "status": "ok"}
+    except Exception as e:
+        return {"database": "error", "message": str(e)}
+
 DB_HOST = os.getenv("DB_HOST")
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")

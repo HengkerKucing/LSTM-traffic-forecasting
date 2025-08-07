@@ -7,3 +7,4 @@ numpy
 tensorflow
 joblib
 python-dotenv
+scikit-learn
